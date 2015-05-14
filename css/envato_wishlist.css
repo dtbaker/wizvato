@@ -1,0 +1,9 @@
+#envato_wishlist{
+
+}
+#envato_wishlist > div{
+    display: none;
+}
+#envato_wishlist section{
+    display: none;
+}
