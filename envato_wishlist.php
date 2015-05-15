@@ -44,6 +44,7 @@ class envato_wishlist {
 	 */
 	public function admin_register_settings(){
 		register_setting( 'envato_wishlist_group', 'envato_personal_token' );
+		register_setting( 'envato_wishlist_group', 'envato_wishlist_material' );
 	}
 	public function add_menu_item(){
 		$page = add_management_page( 'Envato WishList', 'Envato WishList', 'manage_options', 'envato-wishlist', array( $this, 'envato_wishlist_page_options') );
@@ -59,6 +60,10 @@ class envato_wishlist {
 	 * frontend styles and scripts:
 	 */
 	public function register_scripts(){
+		if(get_option('envato_wishlist_material',0)){
+			wp_register_script( 'envato_wishlist_materialize', esc_url( trailingslashit( plugins_url( '/materialize/js/', __FILE__ ) ) ) . 'materialize.min.js', array('jquery'), '1.0.0' );
+			wp_register_style( 'envato_wishlist_materialize', esc_url( trailingslashit( plugins_url( '/materialize/css/', __FILE__ ) ) ) . 'materialize.min.css', array(), '1.0.0' );
+		}
 		wp_register_script( 'envato_wishlist_js', esc_url( trailingslashit( plugins_url( '/js/', __FILE__ ) ) ) . 'envato_wishlist.js', array( 'jquery' ), '1.0.0', true );
 		wp_register_style( 'envato_wishlist_css', esc_url( trailingslashit( plugins_url( '/css/', __FILE__ ) ) ) . 'envato_wishlist.css', array(), '1.0.0' );
 	}
@@ -74,10 +79,15 @@ class envato_wishlist {
 			'market' => '',
 			'ref' => 'dtbaker',
 			'envato_personal_token' => get_option('envato_personal_token', _DEFAULT_ENVATO_PERSONAL_TOKEN),
+			'envato_wishlist_material' => get_option('envato_wishlist_material', 0),
 		);
 		wp_localize_script( 'envato_wishlist_js', 'envato_wishlist_options', $translation_array );
 		wp_enqueue_script('envato_wishlist_js');
 		wp_enqueue_style('envato_wishlist_css');
+		if(get_option('envato_wishlist_material')){
+			wp_enqueue_script('envato_wishlist_materialize');
+			wp_enqueue_style('envato_wishlist_materialize');
+		}
 
 		extract(shortcode_atts(array(
 	    ), $atts));

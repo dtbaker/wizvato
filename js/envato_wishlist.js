@@ -73,6 +73,11 @@ var envato_wishlist = (function () {
     var $wishlist_dom = false;
     var $loading_dom = false;
 
+    var search_site = false;
+    var search_category = false;
+
+    var enable_material = false;
+
     function slug(slugname){
         window.location.hash = slugname;
     }
@@ -81,7 +86,8 @@ var envato_wishlist = (function () {
         slug(stepname);
         $section.find('a').off('click.envato_wishlist');
         $section.find('a').on('click.envato_wishlist', function(){
-            envato_wishlist.set_config('site',jQuery(this).data('site'));
+            search_site = jQuery(this).data('site');
+            search_category = jQuery(this).data('category');
             $section.find('h3 span').text(jQuery(this).text());
             envato_wishlist.ui.loadstep('category', step_category);
             return false;
@@ -90,17 +96,25 @@ var envato_wishlist = (function () {
         else envato_wishlist.ui.loadstep(stepname);
     }
     function step_category($section, stepname, callback){
-        slug(stepname + '=' + envato_wishlist.get_config('site'));
+        slug(stepname + '=' + search_site);
         //alert(config['site']);
+        //console.log('Restrict category to: '+search_category);
         // grab the list of categories for this site via the new api.
-        envato_wishlist.api('market/categories:' + envato_wishlist.get_config('site') + '.json',false,function(api_result){
+        envato_wishlist.api('market/categories:' + search_site + '.json',false,function(api_result){
             var top_level_categories = [];
             if(api_result && typeof api_result.categories != 'undefined'){
                 // find top level categories.
                 $section.find('ul li').remove();
                 for(var i = 0; i < api_result.categories.length; i++){
-                    if( !api_result.categories[i].path.match(/\//) ){
-                        api_result.categories[i].link = jQuery('<a href="#">' + api_result.categories[i].name + '</a>');
+                    //console.log("Checking category: "+api_result.categories[i].path);
+                    if( ( !search_category && !api_result.categories[i].path.match(/\//) )
+                        ||
+                        ( search_category && api_result.categories[i].path.indexOf(search_category) == 0 && (
+                            api_result.categories[i].path == search_category ||
+                            api_result.categories[i].path.match(/^\w+\/\w+$/)
+                        ) )
+                    ){
+                        api_result.categories[i].link = jQuery('<a href="#">' + (api_result.categories[i].path == search_category ? "All " : "") + api_result.categories[i].name + '</a>');
                         api_result.categories[i].link.data('category',api_result.categories[i]);
                         top_level_categories.push(api_result.categories[i]);
                         var li = jQuery('<li/>')
@@ -128,7 +142,7 @@ var envato_wishlist = (function () {
         slug(stepname);
         // grab the list of categories for this site via the new api.
         envato_wishlist.api('discovery/search/search/item',{
-            site: envato_wishlist.get_config('site') + '.net',
+            site: search_site + '.net',
             page_size: 40,
             sort_by: 'trending'
         },function(api_result){
@@ -137,16 +151,42 @@ var envato_wishlist = (function () {
                 // find top level categories.
                 var $results_ul = $section.find('ul');
                 var $results_form = $section.find('form');
-                $results_ul('li').remove();
+                $results_ul.find('li').remove();
                 $results_form.find('div').remove();
+                console.debug(api_result);
                 for(var a in api_result.aggregations){
                     // build up aggregation in the form.
-                    if(api_result.aggregations.hasOwnProperty(a)){
-                        var d = jQuery('div');
+                    if(api_result.aggregations.hasOwnProperty(a) && api_result.aggregations[a] && api_result.aggregations[a].length > 1 && typeof api_result.aggregations[a][0].key != 'undefined'){
+                        var $d = jQuery('<div />', {
+                            class: 'aggregation input-field'
+                        });
                         // dave you're up to here!
+                        var $select = jQuery('<select />',{
+                            name: 'search',
+                            id: 'search-' + a,
+                            class: 'aggregation',
+                            //'data-aggregation': api_result.aggregations[a],
+                            onchange: function(){
+                            }
+                        });
+                        jQuery("<option />", {
+                            value: '',
+                            text: a
+                        }).appendTo($select);
+                        for(var ax = 0; ax < api_result.aggregations[a].length; ax++) {
+                            jQuery("<option />", {
+                                value: api_result.aggregations[a][ax].key,
+                                text: api_result.aggregations[a][ax].key
+                            }).appendTo($select);
+                        }
+                        $select.appendTo($d);
+                        jQuery('<label />', {
+                            text: a
+                        }).appendTo($d);
+                        $d.appendTo($results_form);
                     }
-
                 }
+
                 for(var i = 0; i < api_result.matches.length; i++){
                     api_result.matches[i].link = jQuery('<a/>');
                     for(var x in api_result.matches[i]){
@@ -192,6 +232,8 @@ var envato_wishlist = (function () {
             }
             if(typeof callback == 'function')callback($section, stepname);
             else envato_wishlist.ui.loadstep(stepname);
+            //if(enable_material)$section.find('select').material_select();
+
         });
     }
 
@@ -200,8 +242,8 @@ var envato_wishlist = (function () {
     envato_wishlist.ui = {
         init: function(){
             $wishlist_dom = jQuery('#envato_wishlist');
-            $loading_dom = $wishlist_dom.find('div').first();
-            $wishlist_dom.on('click','section.completed',function(){
+            $loading_dom = $wishlist_dom.find('div.loading').first();
+            $wishlist_dom.on('click','.envatosection.completed',function(){
                 envato_wishlist.ui.loadstep(jQuery(this).attr('step'));
             });
             envato_wishlist.ui.loadstep('welcome', step_welcome);
@@ -211,13 +253,15 @@ var envato_wishlist = (function () {
 
             }
             $section = false;
-            $wishlist_dom.find('section').each(function(){
+            $wishlist_dom.find('.envatosection').each(function(){
                 if(jQuery(this).attr('step') == stepname){
                     $section = jQuery(this);
                 }else{
                     jQuery(this).removeClass('shown');
                     if(!$section){
                         jQuery(this).addClass('completed');
+                    }else{
+                        jQuery(this).removeClass('completed');
                     }
                 }
             });

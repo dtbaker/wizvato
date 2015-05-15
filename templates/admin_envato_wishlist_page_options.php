@@ -12,6 +12,13 @@
         </td>
         </tr>
 
+        <tr valign="top">
+        <th scope="row">Enable Materialize Layout (adds extra CSS that might break your theme)</th>
+        <td><input type="checkbox" name="envato_wishlist_material" value="1" <?php echo get_option('envato_wishlist_material', 0) ? ' checked' : ''; ?> />
+        enbaled
+        </td>
+        </tr>
+
     </table>
 
     <?php submit_button(); ?>
