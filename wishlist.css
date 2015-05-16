@@ -1,11 +1,51 @@
-/* Custom Stylesheet */
-/**
- * Use this file to override Materialize files so you can update
- * the core Materialize files in the future
- *
- * Made By MaterializeCSS.com
- */
 
-.icon-block {
-  padding: 0 15px;
+.envatosection{
+    display: none;
+}
+.envatosection.active,
+.envatosection.shown,
+.envatosection.completed{
+    display: block;
+}
+
+.envatosection .loading_anim{
+    display: none;
+}
+.loading .loading_anim{
+    display: block;
+}
+.loading .inner-content{
+    display: none;
+}
+.envatosection .large-title{
+    display: none;
+}
+.envatosection.active .large-title{
+    display: block;
+}
+.envatosection.active .small-title{
+    display: none;
+}
+.card .card-content .card-title{
+    font-size: 17px;
+    line-height: normal;
+}
+.search_results{
+    clear:both;
+}
+.dropdown-content{
+    z-index: 10000;
+}
+
+.card.selected{
+    box-shadow: 0 0px 12px 0 rgba(36,207,38,1),0 2px 10px 0 rgba(36,207,38,1);
+}
+.card.medium .card-image{
+    height:auto;
+}
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label {
+    padding-left: 22px;
+}
+[type="radio"]+label:before, [type="radio"]+label:after{
+    margin: 4px 1px;
 }

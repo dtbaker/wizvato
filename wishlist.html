@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-  <title>Starter Template - Materialize</title>
+  <title>Envato Wishlist</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
     <link href="wishlist.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -31,10 +31,6 @@
       <div class="row center">
         <h5 class="header col s12 light">Find the perfect item on the Envato Market</h5>
       </div>
-      <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a>
-      </div>
-      <br><br>
 
     </div>
   </div>
@@ -45,137 +41,106 @@
 
 
         <div id="envato_wishlist">
-            <ul class="collapsible" data-collapsible="accordion">
-            <li class="envatosection" step="welcome">
-              <div class="collapsible-header">
-                  <i class="mdi-image-filter-drama"></i>
-                  What would you like to buy?
-              </div>
-              <div class="collapsible-body">
-                  <div class="d" style="padding: 20px">
-                      <div class="row">
-                        <div class="col s12 m6">
 
-                            <div class="card">
-                                <div class="card-image waves-effect waves-block waves-light">
-                                  (icon)
-                                </div>
-                                <div class="card-content">
-                                  <span class="card-title activator grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-more-vert right"></i></span>
-                                  <p><a href="#" data-site="themeforest" data-category="wordpress">Select</a></p>
-                                </div>
-                                <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-close right"></i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                              </div>
-
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_welcome_button">
+                <div class="col s12 m6 l3">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                          {{image}}
                         </div>
-                        <div class="col s12 m6">
-
-                            <div class="card">
-                                <div class="card-image waves-effect waves-block waves-light">
-                                  (icon)
-                                </div>
-                                <div class="card-content">
-                                  <span class="card-title activator grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-more-vert right"></i></span>
-                                  <p><a href="#" data-site="codecanyon" data-category="wordpress">Select</a></p>
-                                </div>
-                                <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-close right"></i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                              </div>
-
+                        <div class="card-content">
+                          <span class="card-title activator grey-text text-darken-4">{{title}} <i class="mdi-navigation-more-vert right"></i></span>
                         </div>
-                        <div class="col s12 m6">
-
-                            <div class="card">
-                                <div class="card-image waves-effect waves-block waves-light">
-                                  (icon)
-                                </div>
-                                <div class="card-content">
-                                  <span class="card-title activator grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-more-vert right"></i></span>
-                                  <p><a href="#" data-site="themeforest" data-category="wordpress">Select</a></p>
-                                </div>
-                                <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-close right"></i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                              </div>
-
+                        <div class="card-action">
+                          <a href="#" class="button_link" data-category="{{category}}" data-site="{{site}}" data-title-text="{{title}}">Select</a>
                         </div>
-                        <div class="col s12 m6">
-
-                            <div class="card">
-                                <div class="card-image waves-effect waves-block waves-light">
-                                  (icon)
-                                </div>
-                                <div class="card-content">
-                                  <span class="card-title activator grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-more-vert right"></i></span>
-                                  <p><a href="#" data-site="themeforest" data-category="wordpress">Select</a></p>
-                                </div>
-                                <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">WordPress Themes <i class="mdi-navigation-close right"></i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                        <div class="card-reveal">
+                          <span class="card-title grey-text text-darken-4">{{title}} <i class="mdi-navigation-close right"></i></span>
+                          <p>{{description}}</p>
+                        </div>
+                      </div>
+                </div>
+            </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_section">
+                <li class="envatosection" data-section="{{section_name}}">
+                  <div class="collapsible-header">
+                      <i class="{{section_icon}}"></i>
+                      <span class="large-title">{{section_title}}</span>
+                      <span class="small-title">{{section_title_small}}</span>
+                  </div>
+                  <div class="collapsible-body">
+                      <div class="d" style="padding: 20px">
+                          <div class="loading_anim">
+                              <div class="preloader-wrapper big active">
+                                <div class="spinner-layer spinner-blue-only">
+                                  <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                  </div><div class="gap-patch">
+                                    <div class="circle"></div>
+                                  </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                  </div>
                                 </div>
                               </div>
-
+                          </div>
+                          <div class="row inner-content">
+                              {{section_option}}
+                          </div>
+                      </div>
+                  </div>
+                </li>
+            </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_search">
+                <form class="search_form"></form>
+                <div class="search_results">
+                    <div class="loading_anim">
+                      <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-blue-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div><div class="gap-patch">
+                            <div class="circle"></div>
+                          </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
                         </div>
                       </div>
                   </div>
-
-
-              </div>
-            </li>
-            <li class="envatosection">
-              <div class="collapsible-header"><i class="mdi-maps-place"></i>Second</div>
-              <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-            </li>
-            <li class="envatosection">
-              <div class="collapsible-header"><i class="mdi-social-whatshot"></i>Third</div>
-              <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-            </li>
-          </ul>
-            <section >
-                <h3>Buy: <span></span></h3>
-                <h2>What would you like to buy?</h2>
-
-            </section>
-            <section step="category">
-                <h3>Category: <span></span></h3>
-                <h2>Choose a Category:</h2>
-                <ul>
-
-                </ul>
-            </section>
-            <section step="search">
-                <h3>Search: <span></span></h3>
-                <h2>Narrow your results:</h2>
-                <form action="">
-
-                </form>
-                <ul>
-
-                </ul>
-            </section>
-            <section step="item">
-                <h2>View Item: <span></span></h2>
-
-            </section>
-            <div class="loading">
-                <div class="preloader-wrapper big active">
-                    <div class="spinner-layer spinner-blue-only">
-                      <div class="circle-clipper left">
-                        <div class="circle"></div>
-                      </div><div class="gap-patch">
-                        <div class="circle"></div>
-                      </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                    </div>
+                  <div class="row inner-content">
+                      <!-- results show here -->
                   </div>
-            </div>
+                </div>
+            </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item">
+                <div class="col s12 m6 l3">
+                    <div class="card medium">
+                        <div class="card-image waves-effect waves-block waves-light">
+                          <img class="activator" src="{{preview}}" />
+                        </div>
+                        <div class="card-content">
+                          <span class="card-title activator grey-text text-darken-4">
+                              <i class="mdi-navigation-more-vert right"></i>
+                                {{name}}
+                          </span>
+                        </div>
+                        <div class="card-action">
+                              <!-- <a href="{{live_preview_url}}" class="preview_link" target="_blank">Preview</a> -->
+                              <a href="#" class="details_link">Details</a>
+                            <div class="right yesnocheck">
+                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check1{{id}}" />
+                            <label for="check1{{id}}" class="no">No</label>
+                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check2{{id}}"  />
+                            <label for="check2{{id}}" class="yes">Yes</label>
+                            </div>
+                        </div>
+                      </div>
+                </div>
+            </script>
+
+            <ul class="collapsible section_holder" data-collapsible="accordion">
+            </ul>
+
+
         </div>
 
 
@@ -185,29 +150,11 @@
   <footer class="page-footer orange">
     <div class="container">
       <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+        <div class="col s12">
+          <h5 class="white-text">Envato Wishlist</h5>
+          <p class="grey-text text-lighten-4">This is a simple JavaScript app which is powered by the new Envato API.</p>
 
 
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
         </div>
       </div>
     </div>
@@ -222,6 +169,26 @@
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
       <script src="js/envato_wishlist.js"></script>
+        <script type="text/javascript">
+
+                jQuery('#envato_wishlist').on('envato.show','.envatosection',function(){
+                    var $h = jQuery(this).find('.collapsible-header');
+                    if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
+                    jQuery(this).find('.aggregation select').material_select();
+                    //jQuery(this).find('.yesnocheck input').material();
+
+                }).on('envato.loading','.envatosection',function(){
+                    var $h = jQuery(this).find('.collapsible-header');
+                    if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
+                });
+                jQuery(function(){
+                    envato_wishlist.set_config({
+                        envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW'
+                    });
+                    envato_wishlist.init();
+                    jQuery('.section_holder').collapsible();
+                });
+        </script>
 
     </body>
   </html>
