@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-  <title>Envato Wishlist</title>
+  <title>Wizvato</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
     <link href="wishlist.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -12,22 +12,10 @@
 
 </head>
 <body>
-  <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Envato Wishlist</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Home</a></li>
-      </ul>
 
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Home</a></li>
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-    </div>
-  </nav>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
-      <h1 class="header center orange-text">Envato Wishlist</h1>
+      <h1 class="header center orange-text">Wizvato</h1>
       <div class="row center">
         <h5 class="header col s12 light">Find the perfect item on the Envato Market</h5>
       </div>
@@ -44,19 +32,20 @@
 
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_welcome_button">
                 <div class="col s12 m6 l3">
-                    <div class="card">
+                    <div class="card welcome_card" data-category="{{category}}" data-site="{{site}}" data-title-text="{{title}}">
                         <div class="card-image waves-effect waves-block waves-light">
-                          {{image}}
+                            <div class="">
+                                <div class="col s12 m8 offset-m2 center">
+                                    <i class="{{icon}} grey-text text-darken-3"></i>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="card-content">
-                          <span class="card-title activator grey-text text-darken-4">{{title}} <i class="mdi-navigation-more-vert right"></i></span>
-                        </div>
-                        <div class="card-action">
-                          <a href="#" class="button_link" data-category="{{category}}" data-site="{{site}}" data-title-text="{{title}}">Select</a>
-                        </div>
-                        <div class="card-reveal">
-                          <span class="card-title grey-text text-darken-4">{{title}} <i class="mdi-navigation-close right"></i></span>
-                          <p>{{description}}</p>
+                        <div class="card-content center">
+                          <span class="card-title activator grey-text text-darken-4">{{title}} </span>
+                        <p>
+                          <a href="#" class="button_link waves-effect waves-light btn orange"><span class="white-text">Select</span></a>
+                            </p>
                         </div>
                       </div>
                 </div>
@@ -70,7 +59,7 @@
                   </div>
                   <div class="collapsible-body">
                       <div class="d" style="padding: 20px">
-                          <div class="loading_anim">
+                          <div class="loading_anim center">
                               <div class="preloader-wrapper big active">
                                 <div class="spinner-layer spinner-blue-only">
                                   <div class="circle-clipper left">
@@ -93,7 +82,7 @@
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_search">
                 <form class="search_form"></form>
                 <div class="search_results">
-                    <div class="loading_anim">
+                    <div class="loading_anim center">
                       <div class="preloader-wrapper big active">
                         <div class="spinner-layer spinner-blue-only">
                           <div class="circle-clipper left">
@@ -111,29 +100,113 @@
                   </div>
                 </div>
             </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_category">
+                <div class="collection category_items"></div>
+            </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_category_item">
+                <a class="collection-item waves-effect waves-light"><i class="mdi-navigation-arrow-forward right"></i>{{category_name}}</a>
+            </script>
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item">
                 <div class="col s12 m6 l3">
-                    <div class="card medium">
+                    <div class="card medium item_card like-{{like}}" data-item-id="{{id}}">
                         <div class="card-image waves-effect waves-block waves-light">
-                          <img class="activator" src="{{preview}}" />
+                          <img class="open_details" src="{{preview}}" />
                         </div>
                         <div class="card-content">
-                          <span class="card-title activator grey-text text-darken-4">
-                              <i class="mdi-navigation-more-vert right"></i>
+                          <span class="card-title open_details grey-text text-darken-4">
                                 {{name}}
                           </span>
+                            <div class="row center item_stats">
+                              <div class="col s4 stars">{{rating}}/5 <span>stars</span></div>
+                                <div class="col s4 sales">{{number_of_sales}} <span>sales</span></div>
+                                <div class="col s4 price">${{price}}</div>
+                            </div>
+                         <div class="row center">
+                              <div class="col s12 notes grey-text"></div>
+                            </div>
                         </div>
                         <div class="card-action">
-                              <!-- <a href="{{live_preview_url}}" class="preview_link" target="_blank">Preview</a> -->
-                              <a href="#" class="details_link">Details</a>
+                              <!-- <a href="{{live_site}}" class="preview_link" target="_blank">Preview</a> -->
+                              <a href="#" class="open_details">Details</a>
                             <div class="right yesnocheck">
-                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check1{{id}}" />
+                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check1{{id}}" value="no" />
                             <label for="check1{{id}}" class="no">No</label>
-                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check2{{id}}"  />
+                            <input class="with-gap" name="yesno{{id}}" type="radio" id="check2{{id}}" value="yes" />
                             <label for="check2{{id}}" class="yes">Yes</label>
                             </div>
                         </div>
                       </div>
+                </div>
+            </script>
+            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item_page">
+                <div class="row">
+                    <div class="col s6">
+                        <a class="waves-effect waves-light btn left item_nav" data-direction="prev"><i class="mdi-navigation-arrow-back left"></i>Previous</a>
+                    </div>
+                    <div class="col s6">
+                        <a class="waves-effect waves-light btn right item_nav" data-direction="next"><i class="mdi-navigation-arrow-forward right"></i>Next</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m8">
+
+                        <div class="preview_image center">
+                            <img src="{{preview}}" />
+                        </div>
+                        <div class="item_actions">
+                            <div class="s12 m8 offset-m2 l6 offset-l3 center">
+                                <a href="{{live_site}}" class="waves-effect waves-light btn center" target="_blank">Live Preview</a>
+                                <a href="{{url}}" class="waves-effect waves-light btn center" target="_blank">View Item Page</a>
+                            </div>
+                        </div>
+
+                        <h3>{{name}}</h3>
+                        <p>{{description}}</p>
+
+
+
+                    </div>
+                    <div class="col s12 m4">
+
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                          <div class="row valign-wrapper">
+                            <div class="col s4">
+                              <img src="{{author_image}}" alt="" class="circle responsive-img">
+                            </div>
+                            <div class="col s8">
+                              <span class="black-text">
+                                Author: <a href="{{author_url}}" target="_blank">{{author_username}}</a>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row"> <div class="col s4"> Rating:</div> <div class="col s8"> {{rating}}/5 </div> </div>
+                          <div class="row"> <div class="col s4"> Sales:</div> <div class="col s8"> {{number_of_sales}} </div> </div>
+                          <div class="row"> <div class="col s4"> Price:</div> <div class="col s8"> ${{price}} </div> </div>
+                          <div class="row"> <div class="col s4"> Updated:</div> <div class="col s8"> {{updated_date}} </div> </div>
+                        </div>
+
+                        <div class="card-panel grey lighten-5 z-depth-1">
+                          <div class="row">
+                            <div class="col s4">
+                                You like?
+                            </div>
+                            <div class="col s8">
+                              <div class="yesnocheck">
+                                <input class="with-gap" name="yesno{{id}}" type="radio" value="no" id="checki1{{id}}" />
+                                <label for="checki1{{id}}" class="no">No</label>
+                                <input class="with-gap" name="yesno{{id}}" type="radio" value="yes" id="checki2{{id}}"  />
+                                <label for="checki2{{id}}" class="yes">Yes</label>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col s12 input-field">
+                                <i class="mdi-editor-mode-edit prefix"></i>
+                                  <textarea id="item_notes" class="envato_item_notes materialize-textarea"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </script>
 
@@ -151,7 +224,7 @@
     <div class="container">
       <div class="row">
         <div class="col s12">
-          <h5 class="white-text">Envato Wishlist</h5>
+          <h5 class="white-text">Wizvato</h5>
           <p class="grey-text text-lighten-4">This is a simple JavaScript app which is powered by the new Envato API.</p>
 
 
@@ -171,23 +244,30 @@
       <script src="js/envato_wishlist.js"></script>
         <script type="text/javascript">
 
-                jQuery('#envato_wishlist').on('envato.show','.envatosection',function(){
-                    var $h = jQuery(this).find('.collapsible-header');
-                    if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
-                    jQuery(this).find('.aggregation select').material_select();
-                    //jQuery(this).find('.yesnocheck input').material();
+            // trying to keep materializecss stuff out of the core js file so I can use it elsewhere
+            jQuery('#envato_wishlist').on('envato.show','.envatosection',function(){
+                var $h = jQuery(this).find('.collapsible-header');
+                $h.parents('.envatosection').first().addClass('fooball');
+                if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
+                jQuery(this).find('.aggregation select').material_select();
+                //jQuery(this).find('.yesnocheck input').material();
 
-                }).on('envato.loading','.envatosection',function(){
-                    var $h = jQuery(this).find('.collapsible-header');
-                    if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
+            }).on('envato.loading','.envatosection',function(){
+                var $h = jQuery(this).find('.collapsible-header');
+                if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
+            });
+            jQuery(function(){
+                // start the magic:
+                envato_wishlist.set_config({
+                    result_count: 40,
+                    envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW'
                 });
-                jQuery(function(){
-                    envato_wishlist.set_config({
-                        envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW'
-                    });
-                    envato_wishlist.init();
-                    jQuery('.section_holder').collapsible();
-                });
+                envato_wishlist.init();
+                // re-run materialize collapsible
+                jQuery('.section_holder').collapsible();
+                // start the welcome step:
+                envato_wishlist.ui.start();
+            });
         </script>
 
     </body>
