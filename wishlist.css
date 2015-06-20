@@ -65,6 +65,7 @@
 .item_card .stars{
     font-size: 1.1em;
 }
+.item_card .price span,
 .item_card .sales span,
 .item_card .stars span{
     display: block;
@@ -82,7 +83,17 @@
     font-size: 7em;
 }
 
+[data-section="favlist"]{
+    display: block;
+}
+[data-section="favlist"][data-count="0"]{
+    display: none;
+}
 [data-section="item"].loading .collapsible-body,
 [data-section="item"].shown .collapsible-body{
     min-height: 700px;
+}
+
+.rating-0{
+    display: none;
 }

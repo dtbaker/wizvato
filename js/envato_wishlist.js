@@ -5,7 +5,8 @@ var envato_wishlist = (function ($) {
 
     var config = {
         api_url: 'https://api.envato.com/v1/',
-        ref: '?ref=dtbaker',
+        ref: '',
+        buttons: [],
         result_count: '',
         envato_personal_token: '',
         site: '',
@@ -69,6 +70,24 @@ var envato_wishlist = (function ($) {
                 var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
                     results = regex.exec(location.search);
                 return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            },
+            ucwords: function(str){
+                //  discuss at: http://phpjs.org/functions/ucwords/
+              // original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+              // improved by: Waldo Malqui Silva
+              // improved by: Robin
+              // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+              // bugfixed by: Onno Marsman
+              //    input by: James (http://www.james-bell.co.uk/)
+              //   example 1: ucwords('kevin van  zonneveld');
+              //   returns 1: 'Kevin Van  Zonneveld'
+              //   example 2: ucwords('HELLO WORLD');
+              //   returns 2: 'HELLO WORLD'
+
+              return (str + '')
+                .replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function($1) {
+                  return $1.toUpperCase();
+                });
             }
         }
     };
@@ -215,7 +234,7 @@ var envato_wishlist = (function ($) {
                         // build up aggregation in the form.
                         if (api_result.aggregations.hasOwnProperty(a) && api_result.aggregations[a] && api_result.aggregations[a].length > 1 && typeof api_result.aggregations[a][0].key != 'undefined') {
                             if (a == 'category')continue;
-                            // todo: template this:
+                            // todo: template this so it doesn't rely on materialize:
                             var $d = $('<div />', {
                                 class: 'aggregation input-field col s12 m6 l3'
                             });
@@ -247,12 +266,14 @@ var envato_wishlist = (function ($) {
                             $select.val(typeof search_params[a] != 'undefined' ? search_params[a] : '');
                             $select.appendTo($d);
                             $('<label />', {
-                                text: a
+                                text: envato_wishlist.util.ucwords(a.replace('_',' '))
                             }).appendTo($d);
                             $d.appendTo($results_form);
                         }
                     }
                 }
+
+                $section.find('.small-title-text').text(api_result.matches.length + ' items');
 
                 for(var i = 0; i < api_result.matches.length; i++){
                     var item_html = template_search_results_item;
@@ -344,8 +365,10 @@ var envato_wishlist = (function ($) {
                     $selected_item.removeClass('like-undecided').removeClass('like-no').removeClass('like-yes').addClass('like-'+$(this).val());
                     item_id = $selected_item.data('item-id');
                     if($(this).val() == "no"){
+                        save_item_prefs(item_id,'data',{});
                         save_item_prefs(item_id,'like','no');
                     }else if($(this).val() == "yes"){
+                        save_item_prefs(item_id,'data',$selected_item.data('item_variables'));
                         save_item_prefs(item_id,'like','yes');
                     }
                     return false;
@@ -437,6 +460,7 @@ var envato_wishlist = (function ($) {
                     $selected_item.removeClass('like-undecided').removeClass('like-no').removeClass('like-yes').addClass('like-'+$(this).val());
                     $selected_item.find('.yesnocheck input[value='+$(this).val()+']').prop('checked',true);
                     if($(this).val() == "no"){
+                        save_item_prefs(item_id,'data',{});
                         save_item_prefs(item_id,'like','no');
                         if(next_item){
                             $selected_item = $(next_item);
@@ -445,6 +469,7 @@ var envato_wishlist = (function ($) {
                             envato_wishlist.ui.loadstep('search');
                         }
                     }else if($(this).val() == "yes"){
+                        save_item_prefs(item_id,'data',item_variables);
                         save_item_prefs(item_id,'like','yes');
                     }
                     return false;
@@ -470,40 +495,7 @@ var envato_wishlist = (function ($) {
 
     function build_welcome_step_ui(){
         // grab the options from config.
-        var buttons = [
-            {
-                title: 'WordPress Themes',
-                description: '',
-                icon: 'mdi-hardware-desktop-mac',
-                image: 'images/wordpress.png',
-                category: 'wordpress',
-                site: 'themeforest'
-            },
-            {
-                title: 'WordPress Plugins',
-                description: '',
-                icon: 'mdi-av-my-library-add',
-                image: 'images/wordpress.png',
-                category: 'wordpress',
-                site: 'codecanyon'
-            },
-            {
-                title: 'Scripts, Apps or Snippets',
-                description: '',
-                icon: 'mdi-action-settings-applications',
-                image: 'images/wordpress.png',
-                category: '',
-                site: 'codecanyon'
-            },
-            {
-                title: 'Logos, Brochures or Graphics',
-                description: '',
-                icon: 'mdi-image-brush',
-                image: 'images/wordpress.png',
-                category: '',
-                site: 'graphicriver'
-            }
-        ];
+        var buttons = envato_wishlist.get_config('buttons');
         var section_html = template_section;
         var button_html = '';
         for(var i = 0; i < buttons.length; i++){
@@ -515,6 +507,7 @@ var envato_wishlist = (function ($) {
             }
             button_html = button_html + button;
         }
+        section_html = section_html.replace('{{section_attrib}}','');
         section_html = section_html.replace('{{section_name}}','welcome');
         section_html = section_html.replace('{{section_title}}','What would you like to buy?');
         section_html = section_html.replace('{{section_icon}}','mdi-av-play-arrow');
@@ -526,6 +519,7 @@ var envato_wishlist = (function ($) {
 
     function build_catgeory_step_ui(){
         var section_html = template_section;
+        section_html = section_html.replace('{{section_attrib}}','');
         section_html = section_html.replace('{{section_name}}','category');
         section_html = section_html.replace('{{section_title}}','Select Category');
         section_html = section_html.replace('{{section_icon}}','mdi-action-dashboard');
@@ -535,6 +529,7 @@ var envato_wishlist = (function ($) {
     }
     function build_search_step_ui(){
         var section_html = template_section;
+        section_html = section_html.replace('{{section_attrib}}','');
         section_html = section_html.replace('{{section_name}}','search');
         section_html = section_html.replace('{{section_title}}','Search Results');
         section_html = section_html.replace('{{section_icon}}','mdi-action-search');
@@ -545,12 +540,37 @@ var envato_wishlist = (function ($) {
     }
     function build_item_step_ui(){
         var section_html = template_section;
+        section_html = section_html.replace('{{section_attrib}}','');
         section_html = section_html.replace('{{section_name}}','item');
         section_html = section_html.replace('{{section_title}}','View Item <span class="large-title-text"></span>');
         section_html = section_html.replace('{{section_icon}}','mdi-action-shop');
         section_html = section_html.replace('{{section_title_small}}','View Item: <span class="small-title-text"></span>');
         section_html = section_html.replace('{{section_option}}','<div class="item_details"></div>');
         return section_html;
+    }
+    function build_fav_step_ui(){
+        var section_html = template_section;
+        section_html = section_html.replace('{{section_attrib}}','data-count="0"');
+        section_html = section_html.replace('{{section_name}}','favlist');
+        section_html = section_html.replace('{{section_title}}','Favourite Items <span class="large-title-text"></span>');
+        section_html = section_html.replace('{{section_icon}}','mdi-action-shop');
+        section_html = section_html.replace('{{section_title_small}}','Favourite Items: <span class="small-title-text"></span>');
+        section_html = section_html.replace('{{section_option}}','<div class="item_details"></div>');
+        return section_html;
+    }
+    function build_fav_item_step_ui(){
+        var section_html = template_section;
+        section_html = section_html.replace('{{section_attrib}}','');
+        section_html = section_html.replace('{{section_name}}','favitem');
+        section_html = section_html.replace('{{section_title}}','View Favourite Item <span class="large-title-text"></span>');
+        section_html = section_html.replace('{{section_icon}}','mdi-action-shop');
+        section_html = section_html.replace('{{section_title_small}}','View Item: <span class="small-title-text"></span>');
+        section_html = section_html.replace('{{section_option}}','<div class="item_details"></div>');
+        return section_html;
+    }
+    function update_fav_list(){
+        var $favlist_section = jQuery('[data-section="favlist"]');
+
     }
     envato_wishlist.ui = {
         init: function(){
@@ -571,6 +591,9 @@ var envato_wishlist = (function ($) {
             $wishlist_dom.find('.section_holder').append(build_catgeory_step_ui());
             $wishlist_dom.find('.section_holder').append(build_search_step_ui());
             $wishlist_dom.find('.section_holder').append(build_item_step_ui());
+            $wishlist_dom.find('.section_holder').append(build_fav_step_ui());
+            $wishlist_dom.find('.section_holder').append(build_fav_item_step_ui());
+            update_fav_list();
 
             $wishlist_dom.on('click','.envatosection.completed',function(){
                 envato_wishlist.ui.loadstep($(this).data('section'));
