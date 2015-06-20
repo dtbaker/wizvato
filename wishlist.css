@@ -82,7 +82,9 @@
 .welcome_card .card-image i{
     font-size: 7em;
 }
-
+[data-section="welcome"]{
+    display: block;
+}
 [data-section="favlist"]{
     display: block;
 }
