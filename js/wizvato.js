@@ -1,6 +1,6 @@
 
 
-var envato_wishlist = (function ($) {
+var wizvato = (function ($) {
     // copyright @dtbaker
 
     var config = {
@@ -96,7 +96,7 @@ var envato_wishlist = (function ($) {
 
 
 // UI / swapping screens around etc..
-(function (envato_wishlist,$) {
+(function (wizvato,$) {
 
     var $wishlist_dom = false;
 
@@ -117,7 +117,7 @@ var envato_wishlist = (function ($) {
             item_prefs[item_id] = {};
         }
         item_prefs[item_id][key] = val;
-        envato_wishlist.set_storage('item_prefs',item_prefs);
+        wizvato.set_storage('item_prefs',item_prefs);
     }
     function get_item_prefs(item_id, key, pref_default){
         if(typeof item_prefs[item_id] != 'undefined' && typeof item_prefs[item_id][key] != 'undefined'){
@@ -128,17 +128,17 @@ var envato_wishlist = (function ($) {
 
     function step_welcome($section, stepname, callback){
         slug(stepname);
-        $section.find('.welcome_card').off('click.envato_wishlist');
-        $section.find('.welcome_card').on('click.envato_wishlist', function(){
+        $section.find('.welcome_card').off('click.wizvato');
+        $section.find('.welcome_card').on('click.wizvato', function(){
             search_site = $(this).data('site');
             search_category = $(this).data('category');
             $section.find('.small-title-text').text($(this).data('title-text'));
             $section.addClass('completed');
-            envato_wishlist.ui.loadstep('category', step_category);
+            wizvato.ui.loadstep('category', step_category);
             return false;
         });
         if(typeof callback == 'function')callback($section, stepname);
-        else envato_wishlist.ui.loadstep(stepname);
+        else wizvato.ui.loadstep(stepname);
     }
     function step_category($section, stepname, callback){
         slug(stepname + '=' + search_site);
@@ -146,9 +146,9 @@ var envato_wishlist = (function ($) {
         //alert(config['site']);
         console.log('Restrict category to: '+search_category);
         // grab the list of categories for this site via the new api.
-        envato_wishlist.api('market/categories:' + search_site + '.json',false,function(api_result){
+        wizvato.api('market/categories:' + search_site + '.json',false,function(api_result){
             var top_level_categories = [];
-            var template_cat_item = $('#template_envato_wishlist_category_item').html();
+            var template_cat_item = $('#template_wizvato_category_item').html();
             if(api_result && typeof api_result.categories != 'undefined'){
                 // find top level categories.
                 $section.find('.category_items').children().remove();
@@ -175,7 +175,7 @@ var envato_wishlist = (function ($) {
                             search_category = $(this).data('category').path;
                             $section.find('.small-title-text').text($(this).data('category').name);
                             $section.addClass('completed');
-                            envato_wishlist.ui.loadstep('search', step_search);
+                            wizvato.ui.loadstep('search', step_search);
                             return false;
                         });
                         $link.appendTo($section.find('.category_items'));
@@ -187,7 +187,7 @@ var envato_wishlist = (function ($) {
                 console.log('Error from API in step_category');
             }
             if(typeof callback == 'function')callback($section, stepname);
-            else envato_wishlist.ui.loadstep(stepname);
+            else wizvato.ui.loadstep(stepname);
         });
     }
 
@@ -202,7 +202,7 @@ var envato_wishlist = (function ($) {
 
         if(!search_params)search_params = {};
         search_params.site = search_site + '.net';
-        search_params.page_size = envato_wishlist.get_config('result_count');
+        search_params.page_size = wizvato.get_config('result_count');
         search_params.sort_by = 'trending';
         if(search_category){
             search_params.category = search_category;
@@ -213,9 +213,9 @@ var envato_wishlist = (function ($) {
             }
         }
 
-        envato_wishlist.api('discovery/search/search/item',search_params,function(api_result){
+        wizvato.api('discovery/search/search/item',search_params,function(api_result){
             var top_level_categories = [];
-            var template_search_results_item = $('#template_envato_wishlist_item').html();
+            var template_search_results_item = $('#template_wizvato_item').html();
 
             if(api_result && typeof api_result.matches != 'undefined' && api_result.matches.length > 0){
                 result_count = api_result.matches.length;
@@ -268,7 +268,7 @@ var envato_wishlist = (function ($) {
                             $select.val(typeof search_params[a] != 'undefined' ? search_params[a] : '');
                             $select.appendTo($d);
                             $('<label />', {
-                                text: envato_wishlist.util.ucwords(a.replace('_',' '))
+                                text: wizvato.util.ucwords(a.replace('_',' '))
                             }).appendTo($d);
                             $d.appendTo($results_form);
                         }
@@ -284,7 +284,7 @@ var envato_wishlist = (function ($) {
                         rating: '',
                         updated_date: '',
                         like: 'undecided',
-                        ref: envato_wishlist.get_config('ref')
+                        ref: wizvato.get_config('ref')
                     };
 
                     if(typeof item_prefs[api_result.matches[i].id] != 'undefined'){
@@ -349,21 +349,21 @@ var envato_wishlist = (function ($) {
 
             }else{
                 alert('No results sorry, please try a different search.');
-                envato_wishlist.ui.loadstep('category');
+                wizvato.ui.loadstep('category');
                 return false;
             }
 
-            $section.find('.open_details').off('click.envato_wishlist');
-            $section.find('.open_details').on('click.envato_wishlist', function(){
+            $section.find('.open_details').off('click.wizvato');
+            $section.find('.open_details').on('click.wizvato', function(){
                 $selected_item = $(this).parents('.item_card').first();
                 $section.addClass('completed');
-                envato_wishlist.ui.loadstep('item', step_item);
+                wizvato.ui.loadstep('item', step_item);
                 return false;
             });
 
             $section.find('.yesnocheck input')
-                .off('change.envato_wishlist')
-                .on('change.envato_wishlist', function(){
+                .off('change.wizvato')
+                .on('change.wizvato', function(){
                     var $item = $(this).parents('.item_card').first();
                     $item.removeClass('like-undecided').removeClass('like-no').removeClass('like-yes').addClass('like-'+$(this).val());
                     item_id = $item.data('item-id');
@@ -380,7 +380,7 @@ var envato_wishlist = (function ($) {
 
 
             if(typeof callback == 'function')callback($section, stepname);
-            else envato_wishlist.ui.loadstep(stepname);
+            else wizvato.ui.loadstep(stepname);
 
         });
     }
@@ -402,7 +402,7 @@ var envato_wishlist = (function ($) {
             }
             result_count = jQuery('[data-section="favlist"]').attr('data-count');
             if(!$selected_item){
-                envato_wishlist.ui.loadstep('favlist');
+                wizvato.ui.loadstep('favlist');
             }
         }
 
@@ -430,13 +430,13 @@ var envato_wishlist = (function ($) {
 
         $section.find('.large-title-text').text(' ' + item_count + ' of ' + result_count);
 
-        envato_wishlist.api('market/item:' + item_id + '.json',false,function(api_result) {
+        wizvato.api('market/item:' + item_id + '.json',false,function(api_result) {
             var top_level_categories = [];
-            var template_search_results_item = $('#template_envato_wishlist_item').html();
+            var template_search_results_item = $('#template_wizvato_item').html();
 
             if (api_result && typeof api_result.item != 'undefined') {
 
-                var item_html = $('#template_envato_wishlist_item_page').html();
+                var item_html = $('#template_wizvato_item_page').html();
                 var item_variables = item_details;
 
                 for(var x in api_result.item){
@@ -456,19 +456,19 @@ var envato_wishlist = (function ($) {
             }
 
             $section.find('.item_nav')
-                .off('click.envato_wishlist')
-                .on('click.envato_wishlist', function(){
+                .off('click.wizvato')
+                .on('click.wizvato', function(){
                     if($(this).data('direction') == 'prev' && previous_item){
                         $selected_item = $(previous_item);
-                        envato_wishlist.ui.loadstep(stepname, step_item);
+                        wizvato.ui.loadstep(stepname, step_item);
                     }else if($(this).data('direction') == 'next' && next_item){
                         $selected_item = $(next_item);
-                        envato_wishlist.ui.loadstep(stepname, step_item);
+                        wizvato.ui.loadstep(stepname, step_item);
                     }else{
                         if(stepname == 'favitem'){
-                            envato_wishlist.ui.loadstep('favlist');
+                            wizvato.ui.loadstep('favlist');
                         }else{
-                            envato_wishlist.ui.loadstep('search');
+                            wizvato.ui.loadstep('search');
                         }
                     }
                     return false;
@@ -477,8 +477,8 @@ var envato_wishlist = (function ($) {
                $section.find('.yesnocheck input[value='+get_item_prefs(item_id,'like',false)+']').prop('checked',true);
             }
             $section.find('.yesnocheck input')
-                .off('change.envato_wishlist')
-                .on('change.envato_wishlist', function(){
+                .off('change.wizvato')
+                .on('change.wizvato', function(){
                     $selected_item.removeClass('like-undecided').removeClass('like-no').removeClass('like-yes').addClass('like-'+$(this).val());
                     $selected_item.find('.yesnocheck input[value='+$(this).val()+']').prop('checked',true);
 
@@ -487,13 +487,13 @@ var envato_wishlist = (function ($) {
                         save_item_prefs(item_id,'like','no');
                         if(next_item){
                             $selected_item = $(next_item);
-                            envato_wishlist.ui.loadstep(stepname, step_item);
+                            wizvato.ui.loadstep(stepname, step_item);
                         }else{
                             $selected_item = false;
                             if(stepname == 'favitem'){
-                                envato_wishlist.ui.loadstep('favlist');
+                                wizvato.ui.loadstep('favlist');
                             }else{
-                                envato_wishlist.ui.loadstep('search');
+                                wizvato.ui.loadstep('search');
                             }
                         }
                     }else if($(this).val() == "yes"){
@@ -513,15 +513,15 @@ var envato_wishlist = (function ($) {
                 });
             $section.find('.envato_item_notes')
                 .val(get_item_prefs(item_id,'notes',''))
-                .off('change.envato_wishlist')
-                .on('change.envato_wishlist', function(){
+                .off('change.wizvato')
+                .on('change.wizvato', function(){
                     $selected_item.find('.notes').text($(this).val());
                     save_item_prefs(item_id,'notes',$(this).val());
                     return false;
                 });
 
             if(typeof callback == 'function')callback($section, stepname);
-            else envato_wishlist.ui.loadstep(stepname);
+            else wizvato.ui.loadstep(stepname);
 
         });
     }
@@ -532,7 +532,7 @@ var envato_wishlist = (function ($) {
 
     function build_welcome_step_ui(){
         // grab the options from config.
-        var buttons = envato_wishlist.get_config('buttons');
+        var buttons = wizvato.get_config('buttons');
         var section_html = template_section;
         var button_html = '';
         for(var i = 0; i < buttons.length; i++){
@@ -561,7 +561,7 @@ var envato_wishlist = (function ($) {
         section_html = section_html.replace('{{section_title}}','Select Category');
         section_html = section_html.replace('{{section_icon}}','mdi-action-dashboard');
         section_html = section_html.replace('{{section_title_small}}','Category: <span class="small-title-text"></span>');
-        section_html = section_html.replace('{{section_option}}',$('#template_envato_wishlist_category').text());
+        section_html = section_html.replace('{{section_option}}',$('#template_wizvato_category').text());
         return section_html;
     }
     function build_search_step_ui(){
@@ -571,7 +571,7 @@ var envato_wishlist = (function ($) {
         section_html = section_html.replace('{{section_title}}','Search Results');
         section_html = section_html.replace('{{section_icon}}','mdi-action-search');
         section_html = section_html.replace('{{section_title_small}}','Search Results: <span class="small-title-text"></span>');
-        var template_search_results = $('#template_envato_wishlist_search').html();
+        var template_search_results = $('#template_wizvato_search').html();
         section_html = section_html.replace('{{section_option}}',template_search_results);
         return section_html;
     }
@@ -592,7 +592,7 @@ var envato_wishlist = (function ($) {
         section_html = section_html.replace('{{section_title}}','Your Favourites: <span class="large-title-text"></span>');
         section_html = section_html.replace('{{section_icon}}','mdi-action-shop');
         section_html = section_html.replace('{{section_title_small}}','Favourites: <span class="small-title-text"></span>');
-        var template_search_results = $('#template_envato_wishlist_search').html();
+        var template_search_results = $('#template_wizvato_search').html();
         section_html = section_html.replace('{{section_option}}',template_search_results);
         return section_html;
     }
@@ -608,7 +608,7 @@ var envato_wishlist = (function ($) {
     }
     function update_fav_list(){
         var $favlist_section = jQuery('[data-section="favlist"]');
-        var template_search_results_item = $('#template_envato_wishlist_item').html();
+        var template_search_results_item = $('#template_wizvato_item').html();
         var fav_count = 0;
 
         var $results_list = $favlist_section.find('.search_results .inner-content');
@@ -641,16 +641,16 @@ var envato_wishlist = (function ($) {
         $favlist_section.attr('data-count',fav_count);
 
 
-        $favlist_section.find('.open_details').off('click.envato_wishlist');
-        $favlist_section.find('.open_details').on('click.envato_wishlist', function(){
+        $favlist_section.find('.open_details').off('click.wizvato');
+        $favlist_section.find('.open_details').on('click.wizvato', function(){
             $selected_item = $(this).parents('.item_card').first();
-            envato_wishlist.ui.loadstep('favitem', step_item);
+            wizvato.ui.loadstep('favitem', step_item);
             return false;
         });
 
         $favlist_section.find('.yesnocheck input')
-            .off('change.envato_wishlist')
-            .on('change.envato_wishlist', function(){
+            .off('change.wizvato')
+            .on('change.wizvato', function(){
                 var $item = $(this).parents('.item_card').first();
                 item_id = $item.data('item-id');
                 if($(this).val() == "no"){
@@ -666,20 +666,20 @@ var envato_wishlist = (function ($) {
 
 
     }
-    envato_wishlist.ui = {
+    wizvato.ui = {
         init: function(){
 
             // seed storage
-            item_prefs = envato_wishlist.get_storage('item_prefs');
+            item_prefs = wizvato.get_storage('item_prefs');
             if(!item_prefs || typeof item_prefs != 'object'){
                 item_prefs = {};
-                envato_wishlist.set_storage('item_prefs',item_prefs);
+                wizvato.set_storage('item_prefs',item_prefs);
             }
 
-            $wishlist_dom = $('#envato_wishlist');
+            $wishlist_dom = $('#wizvato');
 
-            template_section = $('#template_envato_wishlist_section').html();
-            template_welcome_button = $('#template_envato_wishlist_welcome_button').html();
+            template_section = $('#template_wizvato_section').html();
+            template_welcome_button = $('#template_wizvato_welcome_button').html();
 
             $wishlist_dom.find('.section_holder').append(build_fav_step_ui());
             $wishlist_dom.find('.section_holder').append(build_fav_item_step_ui());
@@ -690,11 +690,11 @@ var envato_wishlist = (function ($) {
             update_fav_list();
 
             $wishlist_dom.on('click','.envatosection.completed',function(){
-                envato_wishlist.ui.loadstep($(this).data('section'));
+                wizvato.ui.loadstep($(this).data('section'));
             });
         },
         start: function(){
-            envato_wishlist.ui.loadstep('welcome', step_welcome);
+            wizvato.ui.loadstep('welcome', step_welcome);
         },
         loadstep: function(stepname, loadcode, callback) {
             $section = false;
@@ -723,15 +723,15 @@ var envato_wishlist = (function ($) {
 
     };
 
-    envato_wishlist.add_init(envato_wishlist.ui.init);
+    wizvato.add_init(wizvato.ui.init);
 
-    return envato_wishlist;
-})(envato_wishlist || {}, jQuery);
+    return wizvato;
+})(wizvato || {}, jQuery);
 
 // API
 // todo: clean this up and release it as a separate 3rd party module that others can use to access the API
-(function (envato_wishlist, $) {
-    envato_wishlist.api = function(endpoint, data, callback){
+(function (wizvato, $) {
+    wizvato.api = function(endpoint, data, callback){
         var t = this;
         console.log("API call");
         console.log(data);
@@ -760,5 +760,5 @@ var envato_wishlist = (function ($) {
             dataType: 'json'
         });
     };
-    return envato_wishlist;
-})(envato_wishlist || {}, jQuery);
+    return wizvato;
+})(wizvato || {}, jQuery);
