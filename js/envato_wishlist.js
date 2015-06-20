@@ -615,7 +615,7 @@ var envato_wishlist = (function ($) {
         $results_list.html('');
 
         for(var i in item_prefs){
-            if(item_prefs.hasOwnProperty(i) && item_prefs[i].like == 'yes') {
+            if(item_prefs.hasOwnProperty(i) && item_prefs[i].like == 'yes' && typeof item_prefs[i].data != 'undefined') {
                 fav_count++;
                 var item_html = template_search_results_item;
                 var item_variables = item_prefs[i].data;
