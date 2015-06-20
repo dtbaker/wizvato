@@ -7,8 +7,7 @@
   <title>Wizvato</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
-    <link href="wishlist.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link rel="stylesheet" href="css/envato_wishlist.css">
+    <link href="css/standalone.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 </head>
 <body>
@@ -28,9 +27,9 @@
     <div class="section">
 
 
-        <div id="envato_wishlist">
+        <div id="wizvato">
 
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_welcome_button">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_welcome_button">
                 <div class="col s12 m6 l4">
                     <div class="card welcome_card" data-category="{{category}}" data-site="{{site}}" data-title-text="{{title}}">
                         <div class="card-image waves-effect waves-block waves-light">
@@ -50,7 +49,7 @@
                       </div>
                 </div>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_section">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_section">
                 <li class="envatosection" data-section="{{section_name}}" {{section_attrib}}>
                   <div class="collapsible-header">
                       <i class="{{section_icon}}"></i>
@@ -79,7 +78,7 @@
                   </div>
                 </li>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_search">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_search">
                 <form class="search_form"></form>
                 <div class="search_results">
                     <div class="loading_anim center">
@@ -100,13 +99,13 @@
                   </div>
                 </div>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_category">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_category">
                 <div class="collection category_items"></div>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_category_item">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_category_item">
                 <a class="collection-item waves-effect waves-light"><i class="mdi-navigation-arrow-forward right"></i>{{category_name}}</a>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_item">
                 <div class="col s12 m6 l3">
                     <div class="card medium item_card like-{{like}}" data-item-id="{{id}}">
                         <div class="card-image waves-effect waves-block waves-light">
@@ -140,7 +139,7 @@
                       </div>
                 </div>
             </script>
-            <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item_page">
+            <script type="text/x-envato-wishlist-template" id="template_wizvato_item_page">
                 <div class="row item_navigation">
                     <div class="col s6">
                         <a class="waves-effect waves-light btn left item_nav" data-direction="prev"><i class="mdi-navigation-arrow-back left"></i>Previous</a>
@@ -256,11 +255,11 @@
 
       <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
-      <script src="js/envato_wishlist.js"></script>
+      <script src="js/wizvato.js"></script>
         <script type="text/javascript">
 
             // trying to keep materializecss stuff out of the core js file so I'm not reliant on materialize
-            jQuery('#envato_wishlist').on('envato.show','.envatosection',function(){
+            jQuery('#wizvato').on('envato.show','.envatosection',function(){
                 var $h = jQuery(this).find('.collapsible-header');
                 $h.parents('.envatosection').first().addClass('fooball');
                 if(!$h.parents('.envatosection').first().hasClass('active')) $h.click();
@@ -273,7 +272,7 @@
             });
             jQuery(function(){
                 // start the magic:
-                envato_wishlist.set_config({
+                wizvato.set_config({
                     result_count: 40,
                     envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW',
                     ref: 'dtbaker',
@@ -322,11 +321,11 @@
                         }
                     ]
                 });
-                envato_wishlist.init();
+                wizvato.init();
                 // re-run materialize collapsible
                 jQuery('.section_holder').collapsible();
                 // start the welcome step:
-                envato_wishlist.ui.start();
+                wizvato.ui.start();
             });
         </script>
 
