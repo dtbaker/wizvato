@@ -31,7 +31,7 @@
         <div id="envato_wishlist">
 
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_welcome_button">
-                <div class="col s12 m6 l3">
+                <div class="col s12 m6 l4">
                     <div class="card welcome_card" data-category="{{category}}" data-site="{{site}}" data-title-text="{{title}}">
                         <div class="card-image waves-effect waves-block waves-light">
                             <div class="">
@@ -43,15 +43,15 @@
                         </div>
                         <div class="card-content center">
                           <span class="card-title activator grey-text text-darken-4">{{title}} </span>
-                        <p>
-                          <a href="#" class="button_link waves-effect waves-light btn orange"><span class="white-text">Select</span></a>
+                        <p style="padding:2em 0">
+                           <a href="#" class="button_link waves-effect waves-light btn orange"><span class="white-text">Select</span></a>
                             </p>
                         </div>
                       </div>
                 </div>
             </script>
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_section">
-                <li class="envatosection" data-section="{{section_name}}">
+                <li class="envatosection" data-section="{{section_name}}" {{section_attrib}}>
                   <div class="collapsible-header">
                       <i class="{{section_icon}}"></i>
                       <span class="large-title">{{section_title}}</span>
@@ -117,9 +117,9 @@
                                 {{name}}
                           </span>
                             <div class="row center item_stats">
-                              <div class="col s4 stars">{{rating}}/5 <span>stars</span></div>
+                              <div class="col s4 stars rating-{{rating}}">{{rating}}/5 <span>stars</span></div>
                                 <div class="col s4 sales">{{number_of_sales}} <span>sales</span></div>
-                                <div class="col s4 price">${{price}}</div>
+                                <div class="col s4 price">${{price}} <span>price</span></div>
                             </div>
                          <div class="row center">
                               <div class="col s12 notes grey-text"></div>
@@ -129,17 +129,19 @@
                               <!-- <a href="{{live_site}}" class="preview_link" target="_blank">Preview</a> -->
                               <a href="#" class="open_details">Details</a>
                             <div class="right yesnocheck">
-                            <input class="with-gap" name="yesno1{{id}}" type="radio" id="check1{{id}}" value="no" />
-                            <label for="check1{{id}}" class="no">No</label>
-                            <input class="with-gap" name="yesno1{{id}}" type="radio" id="check2{{id}}" value="yes" />
-                            <label for="check2{{id}}" class="yes">Yes</label>
+                            <form>
+                                <input class="with-gap" name="yesno1{{id}}" type="radio" id="check1{{id}}" value="no" />
+                                <label for="check1{{id}}" class="no">Hide</label>
+                                <input class="with-gap" name="yesno1{{id}}" type="radio" id="check2{{id}}" value="yes" />
+                                <label for="check2{{id}}" class="yes">Like</label>
+                            </form>
                             </div>
                         </div>
                       </div>
                 </div>
             </script>
             <script type="text/x-envato-wishlist-template" id="template_envato_wishlist_item_page">
-                <div class="row">
+                <div class="row item_navigation">
                     <div class="col s6">
                         <a class="waves-effect waves-light btn left item_nav" data-direction="prev"><i class="mdi-navigation-arrow-back left"></i>Previous</a>
                     </div>
@@ -155,15 +157,14 @@
                         </div>
                         <div class="item_actions">
                             <div class="s12 m8 offset-m2 l6 offset-l3 center">
-                                <a href="{{live_site}}" class="waves-effect waves-light btn center" target="_blank">Live Preview</a>
-                                <a href="{{url}}" class="waves-effect waves-light btn center" target="_blank">View Item Page</a>
+                                <a href="{{live_site}}?ref={{ref}}" class="live-preview-link waves-effect waves-light btn center" target="_blank">Live Preview</a>
+                                <a href="{{url}}?ref={{ref}}" class="waves-effect waves-light btn center" target="_blank">View Item Page</a>
                             </div>
                         </div>
 
-                        <h3>{{name}}</h3>
+                        <h4 class="center">{{name}}</h4>
                         <p>{{description}}</p>
-
-
+                        <p><a href="{{url}}?ref={{ref}}" class="" target="_blank">(view full item description)</a></p>
 
                     </div>
                     <div class="col s12 m4">
@@ -175,14 +176,28 @@
                             </div>
                             <div class="col s8">
                               <span class="black-text">
-                                Author: <a href="{{author_url}}" target="_blank">{{author_username}}</a>
+                                Author: <a href="{{author_url}}?ref={{ref}}" target="_blank">{{author_username}}</a>
                               </span>
                             </div>
                           </div>
-                          <div class="row"> <div class="col s4"> Rating:</div> <div class="col s8"> {{rating}}/5 </div> </div>
+                          <div class="row rating-{{rating}}"> <div class="col s4"> Rating:</div> <div class="col s8"> {{rating}}/5 </div> </div>
                           <div class="row"> <div class="col s4"> Sales:</div> <div class="col s8"> {{number_of_sales}} </div> </div>
                           <div class="row"> <div class="col s4"> Price:</div> <div class="col s8"> ${{price}} </div> </div>
                           <div class="row"> <div class="col s4"> Updated:</div> <div class="col s8"> {{updated_date}} </div> </div>
+                            <div class="row">
+                                <div class="item_actions">
+                                    <div class="center">
+                                        <a href="{{url}}?ref={{ref}}" class="waves-effect waves-light btn center" target="_blank">Buy Now</a>
+                                        <!-- <form action="http://codecanyon.net/cart/add/{{id}}?ref={{ref}}&redirect_back=true" method="post" target="_blank">
+                                            <input type="hidden" name="utf8" value="âœ“">
+                                            <input type="hidden" name="license" value="regular">
+                                            <input type="hidden" name="purchasable_regular" value="source">
+                                            <input type="hidden" name="purchasable_extended" value="source">
+                                            <input type="submit" class="waves-effect waves-light btn center" value="Add To Cart"/>
+                                        </form> -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="card-panel grey lighten-5 z-depth-1">
@@ -193,9 +208,9 @@
                             <div class="col s8">
                               <div class="yesnocheck">
                                 <input class="with-gap" name="yesno2{{id}}" type="radio" value="no" id="checki1{{id}}" />
-                                <label for="checki1{{id}}" class="no">No</label>
+                                <label for="checki1{{id}}" class="no">Hide &amp; Next</label>
                                 <input class="with-gap" name="yesno2{{id}}" type="radio" value="yes" id="checki2{{id}}"  />
-                                <label for="checki2{{id}}" class="yes">Yes</label>
+                                <label for="checki2{{id}}" class="yes">Like</label>
                                 </div>
                             </div>
                           </div>
@@ -225,7 +240,7 @@
       <div class="row">
         <div class="col s12">
           <h5 class="white-text">Wizvato</h5>
-          <p class="grey-text text-lighten-4">This is a simple JavaScript app which is powered by the new Envato API.</p>
+          <p class="grey-text text-lighten-4">This JavaScript app is powered by the new Envato API.</p>
 
 
         </div>
@@ -244,7 +259,7 @@
       <script src="js/envato_wishlist.js"></script>
         <script type="text/javascript">
 
-            // trying to keep materializecss stuff out of the core js file so I can use it elsewhere
+            // trying to keep materializecss stuff out of the core js file so I'm not reliant on materialize
             jQuery('#envato_wishlist').on('envato.show','.envatosection',function(){
                 var $h = jQuery(this).find('.collapsible-header');
                 $h.parents('.envatosection').first().addClass('fooball');
@@ -260,7 +275,52 @@
                 // start the magic:
                 envato_wishlist.set_config({
                     result_count: 40,
-                    envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW'
+                    envato_personal_token: 'Fc3oLv8VM9PcH0anOWEAWFxIW9WILOmW',
+                    ref: 'dtbaker',
+                    buttons: [
+                        {
+                            title: 'WordPress Themes',
+                            description: '',
+                            icon: 'mdi-hardware-desktop-mac',
+                            category: 'wordpress',
+                            site: 'themeforest'
+                        },
+                        {
+                            title: 'WordPress Plugins',
+                            description: '',
+                            icon: 'mdi-av-my-library-add',
+                            category: 'wordpress',
+                            site: 'codecanyon'
+                        },
+                        {
+                            title: 'Scripts, Apps or Snippets',
+                            description: '',
+                            icon: 'mdi-action-settings-applications',
+                            category: '',
+                            site: 'codecanyon'
+                        },
+                        {
+                            title: 'Logos, Brochures or Graphics',
+                            description: '',
+                            icon: 'mdi-image-brush',
+                            category: '',
+                            site: 'graphicriver'
+                        },
+                        {
+                            title: 'Video Effects or Footage',
+                            description: '',
+                            icon: 'mdi-av-videocam',
+                            category: '',
+                            site: 'videohive'
+                        },
+                        {
+                            title: 'Stock Photography',
+                            description: '',
+                            icon: 'mdi-image-camera-alt',
+                            category: '',
+                            site: 'photodune'
+                        }
+                    ]
                 });
                 envato_wishlist.init();
                 // re-run materialize collapsible
